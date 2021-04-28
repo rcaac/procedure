@@ -244,15 +244,15 @@
                 if(!this.pagination.to) {
                     return [];
                 }
-                var from = this.pagination.current_page - this.offset;
+                let from = this.pagination.current_page - this.offset;
                 if(from < 1) {
                     from = 1;
                 }
-                var to = from + (this.offset * 2);
+                let to = from + (this.offset * 2);
                 if(to >= this.pagination.last_page){
                     to = this.pagination.last_page;
                 }
-                var pagesArray = [];
+                let pagesArray = [];
                 while(from <= to) {
                     pagesArray.push(from);
                     from++;
@@ -263,9 +263,9 @@
         methods : {
             listEntity(page, id, search) {
                 let me=this;
-                var url= this.ruta + '/entity?page=' + page + '&id=' + id + '&search=' + search;
+                let url= this.ruta + '/entity?page=' + page + '&id=' + id + '&search=' + search;
                 axios.get(url).then((response) => {
-                    var res= response.data;
+                    let res= response.data;
                     me.arrayEntity = res.list_dependency_entity.data;
                     me.pagination  = res.pagination;
                 })

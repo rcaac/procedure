@@ -212,7 +212,6 @@
                 axios.get(`${this.ruta}/slopes/${id}`)
                     .then(() => {
                         this.arrayRequirements  = [];
-                        this.views = false;
                         this.getSlopes(1)
                 })
                 .catch(function (error) {

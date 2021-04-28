@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ChargeAssignment;
 use App\Entity;
 use App\Dependency;
 use App\EntityType;
@@ -26,7 +27,7 @@ class EntityController extends Controller
 
     private function getRole()
     {
-        return auth()->user()->person->chargeAssignments->first()->role_id;
+        return ChargeAssignment::charge();
     }
 
     public function getListEntity($id)

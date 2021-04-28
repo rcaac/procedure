@@ -112,7 +112,7 @@ class DependencyController extends Controller
 
     private function getRole()
     {
-        return auth()->user()->person->chargeAssignments->first()->role_id;
+        return ChargeAssignment::charge();
     }
 
     public function dependency($search, $entity_id, $dependency_type_id)

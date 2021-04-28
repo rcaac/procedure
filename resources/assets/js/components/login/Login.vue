@@ -11,10 +11,10 @@
                             <select v-model="entity_id"  class="form-control">
                                 <option value="0" disabled>Elija Entidad</option>
                                 <option
-                                        v-for="entities in arrayEntities"
-                                        :key="entities.id"
-                                        :value="entities.id"
-                                        v-text="entities.description"
+                                    v-for="entities in arrayEntities"
+                                    :key="entities.id"
+                                    :value="entities.id"
+                                    v-text="entities.description"
                                 >
                                 </option>
                             </select>

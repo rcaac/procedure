@@ -184,7 +184,7 @@ class UserController extends Controller
 
     private function getRole()
     {
-        return auth()->user()->person->chargeAssignments->first()->role_id;
+        return ChargeAssignment::charge();
     }
 
     private function getDependencyId()
