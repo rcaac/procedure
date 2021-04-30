@@ -58,6 +58,6 @@ const app = new Vue({
     router,
     data: {
         notifications: [],
-        ruta: 'http://tramite.munipillcomarca.gob.pe',
+        ruta: 'http://159.89.177.76',
     }
 });
