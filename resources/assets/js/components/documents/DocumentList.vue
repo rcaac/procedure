@@ -42,10 +42,20 @@
                         <i class="fa fa-eye"></i> Anexos
                     </button>
                 </div>
-                <div>
-                    <button type="button" class="btn btn-outline-warning btn-sm" @click="$emit('receive', pending.documentary_procedure_id)">
+                <div v-if="current > 20">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" disabled @click="$emit('receive', pending.documentary_procedure_id)">
                         <i class="icon-check"></i> Recepcionar
                     </button>
+                </div>
+                <div v-if="current <= 20 && total < 20">
+                  <button type="button" class="btn btn-outline-warning btn-sm" @click="$emit('receive', pending.documentary_procedure_id)">
+                    <i class="icon-check"></i> Recepcionar
+                  </button>
+                </div>
+                <div v-if="current <= 20 && total > 20">
+                  <button type="button" class="btn btn-danger btn-sm" @click="$emit('receive', pending.documentary_procedure_id)">
+                    <i class="icon-check"></i> Recepcionar
+                  </button>
                 </div>
             </div>
             <div v-if="viewProcess">
@@ -83,6 +93,19 @@
 
 <script>
     export default {
-        props: ['pending', 'viewProcess', 'viewPending'],
+        props: ['pending', 'viewProcess', 'viewPending', 'current', 'total'],
+      data () {
+        return {
+          cantidad: 0
+        }
+      },
+      mounted() {
+        this.verify();
+      },
+      methods : {
+          verify(){
+            console.log("CANTIDAD DE REGISTROS " + this.current);
+          }
+      }
     }
 </script>

@@ -59,7 +59,7 @@ class DocumentPendingController extends Controller
             )
             ->where('documentary_procedures.dependency_reception_id', $this->getDependencyId())
             ->where('documentary_procedures.procedure_state_id', 1)
-            ->orderBy('documents.id', 'DESC');
+            ->orderBy('documents.id', 'ASC');
     }
 
     public function getSlopes(Request $request)

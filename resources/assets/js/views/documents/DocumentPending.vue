@@ -66,8 +66,10 @@
                         </thead>
                         <tbody>
                             <document-list
-                                v-for="pending in arraySlopes"
+                                v-for="(pending, i) in arraySlopes"
                                 :key="pending.id"
+                                :current="pagination.to"
+                                :total="pagination.total"
                                 :pending="pending"
                                 :viewPending="viewPending"
                                 @openModalRequirement="openModal($event)"

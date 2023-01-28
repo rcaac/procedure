@@ -6,6 +6,7 @@ use App\AttentionProcedure;
 use App\AttentionType;
 use App\Dependency;
 use App\Module;
+use App\Person;
 use App\Procedure;
 use App\ProcedureQualification;
 use Illuminate\Http\Request;
@@ -18,13 +19,13 @@ class ProcedureController extends Controller
 
         $qualifications = ProcedureQualification::select('id', 'description')->get();
 
-        $procedures = AttentionProcedure::select('procedures.id', 'procedures.description')
-            ->join('procedures', 'attention_procedures.procedure_id', '=', 'procedures.id')
-            ->join('dependencies', 'attention_procedures.dependency_id', '=', 'dependencies.id')
-            ->join('attention_types', 'attention_procedures.attention_type_id', '=', 'attention_types.id')
+        $procedures = Person::select('procedures.id', 'procedures.description')
+            ->join('charge_assignments', 'charge_assignments.person_id', '=', 'persons.id')
+            ->join('dependencies', 'charge_assignments.dependency_id', '=', 'dependencies.id')
             ->join('entities', 'dependencies.entity_id', 'entities.id')
+            ->join('procedures', 'persons.id', 'procedures.created_by')
             ->where('entities.id', $this->getEntityId())
-            ->where('attention_procedures.attention_type_id', 2)
+            ->groupBy('procedures.id')
             ->get();
 
         if ($this->getRole() == 1) {

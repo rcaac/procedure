@@ -14,6 +14,7 @@ use App\DocumentPriority;
 use App\DocumentProcedure;
 use App\DocumentType;
 use App\Entity;
+use App\Person;
 use App\Procedure;
 use App\ProcedureRequirement;
 use App\Provided;
@@ -330,8 +331,9 @@ class DocumentController extends Controller
     public function getPersonQuery(Request $request)
     {
         $newQuery = $request->newQuery;
+        $documentOrigin = $request->documentOrigin;
 
-        if (isset($newQuery)) {
+        if (isset($newQuery) && $documentOrigin != 3) {
 
             $person_charge = Entity::join('dependencies','dependencies.entity_id','=','entities.id')
                 ->join('charge_assignments', 'charge_assignments.dependency_id', '=', 'dependencies.id')
@@ -351,6 +353,12 @@ class DocumentController extends Controller
                 ->where('dependencies.entity_id', $this->getEntityId())
                 ->where(function ($query) use ($newQuery){
                     $query->where('persons.dni', 'like', '%'.$newQuery.'%');
+                })
+                ->get();
+        }else if (isset($newQuery) && $documentOrigin = 3) {
+            $person_charge = Person::select('dni', 'firstName', 'lastName', 'id AS person_id', DB::raw('CONCAT(firstName, " ", lastName) AS fullName'))
+                ->where(function ($query) use ($newQuery){
+                    $query->where('dni', 'like', '%'.$newQuery.'%');
                 })
                 ->get();
         }else {

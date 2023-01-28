@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="form-group row" v-if="Object.keys(origin_data.selectedUser).length">
+            <div class="form-group row" v-if="Object.keys(origin_data.selectedUser).length && origin_data.document_origin_id !== 3">
                 <label class="col-md-2 form-control-label">Entidad:</label>
                 <div class="col-md-6">
                     <input type="text" v-model="origin_data.selectedUser.entity" class="form-control form-control-sm">
@@ -167,7 +167,7 @@
         },
         watch: {
             query(newQuery) {
-                var url = this.origin_data.route + '/documentPersonQuery?newQuery=' + newQuery;
+                var url = this.origin_data.route + '/documentPersonQuery?newQuery=' + newQuery + '&&documentOrigin=' + this.origin_data.document_origin_id;
                 axios.get(url)
                 .then((res) => {
                     this.users = res.data.person_charge;
@@ -209,6 +209,11 @@
                     me.$refs.typeahead.inputValue = response.data.dni;
                     me.selectUser(response.data.dni);
                     me.closeModal();
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Registrado!',
+                      text: 'El registro ha sido creado con éxito.'
+                    });
                 },function (error) {
                     me.errors               = error.response.data.errors;
                     me.activity_user.errors = error.response.data.errors

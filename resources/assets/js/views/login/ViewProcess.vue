@@ -162,6 +162,7 @@
                                             class="form-control"
                                             :placeholder="'Ingrese la descripción del anexo '+(index+1)"
                                             :class="{'is-invalid' : item.validateText}"
+                                            @input="verifyFileName(index)"
                                         ></textarea>
                                         <em class="invalid-feedback" v-if="item.validateText">{{item.validateText}}</em>
                                     </div>
@@ -170,16 +171,16 @@
                                     <label v-if="index === 0">&nbsp;</label>
                                     <label>
                                         <a class="btn btn-secondary">
-                                            <i class="icon-cloud-upload" v-if="item.archive === -1"/>
-                                            <i class="icon-check" style="color: #00a67c" v-else/>
-                                            Cargar su archivo
+                                          <i class="icon-cloud-upload" v-if="item.archive === -1"/>
+                                          <i class="icon-check" style="color: #00a67c" v-else/>
+                                          Cargar su archivo
                                         </a>
                                         <input
                                             ref="imageUploader"
                                             type="file"
                                             name="annexe"
                                             accept="image/*, application/pdf"
-                                            @change="updateImageListAnnexes($event, index)"
+                                            @change="updateImageListAnnexes($event, index); verifyFileName(index)"
                                             style="display: none;"
                                         />
                                         <em class="text-danger" v-if="item.validateFile">{{item.validateFile}}</em>
@@ -558,6 +559,14 @@
                         this.annexes[index].validateFile = 'Debe Seleccionar un archivo'
                     }
                 }
+            },
+            verifyFileName(index) {
+              if (this.annexes[index].annexe === '') {
+                this.annexes[index].validateText = 'Debe ingresar la descripción del anexo';
+              }else{
+                console.log("EVENT...")
+                this.annexes[index].validateText = '';
+              }
             },
             remove(index) {
                 this.annexes.splice(index, 1);

@@ -21,6 +21,8 @@ class ChargeAssignment extends Model
 
     static function charge()
     {
-        return  ChargeAssignment::where('dependency_id', Session::get('dependency_id'))->value('role_id');
+        return  ChargeAssignment::where('dependency_id', Session::get('dependency_id'))
+            ->where('person_id', auth()->user()->person->id)
+            ->where('charge_state_id', 1)->value('role_id');
     }
 }

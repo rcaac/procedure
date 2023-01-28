@@ -294,6 +294,23 @@ class UserController extends Controller
         ]);
     }
 
+    public  function validateUserExternal()
+    {
+        return request()->validate([
+            'firstName'                   => 'required',
+            'lastName'                    => 'required',
+            'dni'                         => 'required|numeric|digits:8,',
+            'identification_document_id'  => 'required|integer|not_in:0',
+        ], [
+            'firstName.required'                => 'El nombre es obligatorio',
+            'lastName.required'                 => 'El apellido es obligatorio',
+            'dni.required'                      => 'El dni es obligatorio',
+            'dni.numeric'                       => 'El dni debe de contener caracteres numéricos',
+            'dni.digits'                        => 'El dni debe de contener 08 dígitos',
+            'identification_document_id.not_in' => 'Elige un tipo',
+        ]);
+    }
+
     public function store(Request $request)
     {
         $this->validateUser();
@@ -334,42 +351,59 @@ class UserController extends Controller
 
     public function externalStore(Request $request)
     {
-        $this->validateUser();
+        $this->validateUserExternal();
 
         try{
             DB::beginTransaction();
 
-            $person = new Person();
-            $person->firstName                  = $request->firstName;
-            $person->lastName                   = $request->lastName;
-            $person->dni                        = $request->dni;
-            $person->phone                      = $request->phone;
-            $person->email                      = $request->email;
-            $person->direction                  = $request->direction;
-            $person->identification_document_id = $request->identification_document_id;
-            $person->created_by                 = $this->getPersonId();
-            $person->save();
+            if (Person::where('dni', request('dni'))->count() > 0) {
+                $personId = Person::where('dni', $request->dni)->value('id');
+                $charge = new ChargeAssignment();
+                $charge->charge          = 'Ciudadano';
+                $charge->type            = 2;
+                $charge->person_id       = $personId;
+                $charge->role_id         = 4;
+                $charge->dependency_id   = $request->dependency_citizen_id;
+                $charge->charge_state_id = 1;
+                $charge->created_by      = $this->getPersonId();
+                $charge->save();
 
-            $user = new User();
-            $user->user = $request->dni;
-            $user->password = bcrypt($request->dni);
-            $user->person_id  = $person->id;
-            $user->created_by = $this->getPersonId();
-            $user->save();
+                DB::commit();
 
-            $charge = new ChargeAssignment();
-            $charge->charge          = 'Ciudadano';
-            $charge->type            = 2;
-            $charge->person_id       = $person->id;
-            $charge->role_id         = 4;
-            $charge->dependency_id   = $request->dependency_citizen_id;
-            $charge->charge_state_id = 1;
-            $charge->created_by      = $this->getPersonId();
-            $charge->save();
+                $dni = Person::where('id', $personId)->value('dni');
+            }else {
+                $person = new Person();
+                $person->firstName                  = $request->firstName;
+                $person->lastName                   = $request->lastName;
+                $person->dni                        = $request->dni;
+                $person->phone                      = $request->phone;
+                $person->email                      = $request->email;
+                $person->direction                  = $request->direction;
+                $person->identification_document_id = $request->identification_document_id;
+                $person->created_by                 = $this->getPersonId();
+                $person->save();
 
-            DB::commit();
+                $user = new User();
+                $user->user = $request->dni;
+                $user->password = bcrypt($request->dni);
+                $user->person_id  = $person->id;
+                $user->created_by = $this->getPersonId();
+                $user->save();
 
-            $dni = Person::where('id', $person->id)->value('dni');
+                $charge = new ChargeAssignment();
+                $charge->charge          = 'Ciudadano';
+                $charge->type            = 2;
+                $charge->person_id       = $person->id;
+                $charge->role_id         = 4;
+                $charge->dependency_id   = $request->dependency_citizen_id;
+                $charge->charge_state_id = 1;
+                $charge->created_by      = $this->getPersonId();
+                $charge->save();
+
+                DB::commit();
+
+                $dni = Person::where('id', $person->id)->value('dni');
+            }
 
             return ['dni' => $dni];
 
