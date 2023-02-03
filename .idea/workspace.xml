@@ -19,6 +19,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/symfony/thanks" />
@@ -165,6 +168,11 @@
       <workItem from="1619692561412" duration="600000" />
       <workItem from="1619793724041" duration="995000" />
       <workItem from="1619806844872" duration="1495000" />
+      <workItem from="1675178417765" duration="990000" />
+      <workItem from="1675179428513" duration="2900000" />
+      <workItem from="1675294855879" duration="1854000" />
+      <workItem from="1675307049830" duration="3731000" />
+      <workItem from="1675402427669" duration="1028000" />
     </task>
     <servers />
   </component>
