@@ -58,7 +58,7 @@ const app = new Vue({
     router,
     data: {
         notifications: [],
-        ruta: 'http://localhost',
+        ruta: 'http://procedure.test',
         //ruta: 'http://159.89.177.76',
     }
 });
