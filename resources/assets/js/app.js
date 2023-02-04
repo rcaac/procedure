@@ -58,7 +58,6 @@ const app = new Vue({
     router,
     data: {
         notifications: [],
-        ruta: 'http://localhost',
-        //ruta: 'http://159.89.177.76',
-    }
+        ruta: 'http://54.146.70.34',
+        }
 });
